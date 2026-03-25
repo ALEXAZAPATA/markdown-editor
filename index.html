@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Markdown Editor</title>
+
+  <!-- estilos del editor -->
+  <link rel="stylesheet" href="./node_modules/simplemde/dist/simplemde.min.css">
+
+  <!-- script del editor -->
+  <script src="./node_modules/simplemde/dist/simplemde.min.js"></script>
+
+  <style>
+    html, body {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+    }
+
+    .CodeMirror {
+      flex: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <textarea id="editor"></textarea>
+
+  <script>
+    // 🔥 crear editor
+    var editor = new SimpleMDE({
+      element: document.getElementById('editor')
+    });
+
+    // 🔥 comunicación con Electron
+    const { ipcRenderer } = require('electron');
+
+    // GUARDAR
+    ipcRenderer.on('save-file', () => {
+      const content = editor.value();
+      ipcRenderer.send('file-content', content);
+    });
+
+    // ABRIR
+    ipcRenderer.on('load-file', (event, content) => {
+      editor.value(content);
+    });
+
+    // NUEVO
+    ipcRenderer.on('new-file', () => {
+      editor.value('');
+    });
+  </script>
+
+</body>
+</html>
