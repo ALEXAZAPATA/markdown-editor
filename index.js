@@ -22,7 +22,7 @@ app.on('ready', () => {
         {
           label: 'New',
           click() {
-            // 🔥 limpiar editor
+         
             win.webContents.send('new-file');
           }
         },
@@ -39,7 +39,6 @@ app.on('ready', () => {
             if (filePaths.length > 0) {
               const content = fs.readFileSync(filePaths[0], 'utf-8');
 
-              // 🔥 mandar contenido al editor
               win.webContents.send('load-file', content);
             }
           }
@@ -47,7 +46,7 @@ app.on('ready', () => {
         {
           label: 'Save',
           click() {
-            // 🔥 pedir contenido al editor
+           
             win.webContents.send('save-file');
           }
         },
@@ -74,7 +73,7 @@ app.on('ready', () => {
   Menu.setApplicationMenu(menu);
 });
 
-// 🔥 guardar archivo
+
 ipcMain.on('file-content', async (event, content) => {
   const { filePath } = await dialog.showSaveDialog({
     title: 'Guardar archivo',
